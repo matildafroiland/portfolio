@@ -1,0 +1,6 @@
+/* Self-hosted fonts (SIL Open Font License). size-adjust evens out how big each font looks. */
+@font-face{font-family:"Head";src:url("fraunces-normal.woff2") format("woff2");font-weight:300 600;font-style:normal;font-display:swap;size-adjust:84%}
+@font-face{font-family:"Head";src:url("fraunces-italic.woff2") format("woff2");font-weight:300 600;font-style:italic;font-display:swap;size-adjust:84%}
+@font-face{font-family:"Hand";src:url("reeniebeanie-normal.woff2") format("woff2");font-weight:400;font-display:swap;size-adjust:135%}
+@font-face{font-family:"Body";src:url("dmsans-normal.woff2") format("woff2");font-weight:400 500;font-style:normal;font-display:swap}
+@font-face{font-family:"Body";src:url("dmsans-italic.woff2") format("woff2");font-weight:400;font-style:italic;font-display:swap}

@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Timebox · Matilda Aanestad Frøiland</title>
+<link rel="stylesheet" href="fonts/fonts.css">
+<script type="importmap">
+{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"}}
+</script>
+<style>
+:root{
+  --bg:#EAE2D3; --ink:#1E2A3F; --ink-soft:#4E5968; --line:rgba(30,42,63,.16); --card:rgba(255,255,255,.45);
+  --navy:#22344F; --green:#3F5A45; --pink:#E3A1B3; --pink-ink:#B85E7A; --blush:#F6D6DD; --sage:#D5DECB;
+  --f-head:"Head",Georgia,serif; --f-body:"Body",system-ui,sans-serif; --f-hand:"Hand",cursive;
+  --head-scale:1; --hand-scale:1; --head-weight:350; --head-track:-0.02em;
+}
+body[data-theme="dark"]{--ink:#F4EFE5;--ink-soft:#B9C3D2;--line:rgba(244,239,229,.2);--card:rgba(255,255,255,.07)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);-webkit-font-smoothing:antialiased;line-height:1.6;transition:background-color .9s ease,color .6s ease}
+img,video{display:block;max-width:100%}
+a{color:inherit}
+.hand{font-family:var(--f-hand);font-weight:400}
+.wrap{max-width:1120px;margin:0 auto;padding:0 40px}
+.narrow{max-width:700px}
+h1,h2,h3,.head{font-family:var(--f-head);font-weight:var(--head-weight);letter-spacing:var(--head-track)}
+h1{font-size:calc(clamp(72px,11vw,140px) * var(--head-scale));line-height:.92;margin:0}
+h2{font-size:calc(clamp(40px,5.4vw,64px) * var(--head-scale));line-height:1.02;margin:0 0 22px}
+h3{font-size:calc(28px * var(--head-scale));line-height:1.15;margin:0 0 8px}
+p{font-size:17px;margin:0 0 16px}
+.muted{color:var(--ink-soft)}
+.label{font-family:var(--f-hand);font-size:calc(24px * var(--hand-scale));color:var(--pink-ink);margin:0 0 4px;display:inline-block;transform:rotate(-2deg)}
+body[data-theme="dark"] .label{color:var(--pink)}
+.caption{font-size:13px;color:var(--ink-soft);margin:10px 0 0}
+
+/* scribbles */
+.u{background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 14' preserveAspectRatio='none'%3E%3Cpath d='M3 9 C 40 3, 90 13, 197 5' stroke='%23E3A1B3' stroke-width='5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E") left bottom/100% .38em no-repeat;padding-bottom:.08em}
+.hl{background:linear-gradient(transparent 55%,rgba(227,161,179,.55) 55%,rgba(227,161,179,.55) 92%,transparent 92%);padding:0 .1em}
+.circ{position:relative;white-space:nowrap}
+.circ svg{position:absolute;left:-12%;top:-22%;width:124%;height:144%;overflow:visible;pointer-events:none}
+.circ path{stroke:var(--pink);stroke-width:3;fill:none;stroke-linecap:round;stroke-dasharray:420;stroke-dashoffset:420;transition:stroke-dashoffset 1.2s ease .2s}
+.in .circ path,.circ.in path{stroke-dashoffset:0}
+
+/* reveal on scroll */
+.rv{opacity:0;transform:translateY(24px);transition:opacity .8s ease,transform .8s ease}
+.rv.in{opacity:1;transform:none}
+
+nav{display:flex;justify-content:space-between;align-items:center;padding:28px 0}
+nav .logo{font-family:var(--f-head);font-size:22px;text-decoration:none}
+nav .links a{margin-left:28px;font-size:14px;text-decoration:none}
+.back{font-size:14px;text-decoration:none;color:var(--ink-soft);display:inline-block;margin:10px 0 30px}
+.back:hover{color:var(--pink-ink)}
+
+/* hero */
+.kicker{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);margin:0 0 10px}
+.title-row{display:flex;align-items:flex-end;gap:24px;flex-wrap:wrap}
+.title-row .hand{font-size:calc(28px * var(--hand-scale));color:var(--pink-ink);transform:rotate(-4deg);margin-bottom:18px}
+.lede{font-size:22px;line-height:1.45;max-width:640px;margin:22px 0 40px}
+.hero-img{border-radius:18px;overflow:hidden;position:relative}
+.hero-img img{width:100%;aspect-ratio:16/9;object-fit:cover;object-position:50% 88%}
+.hero-img .tape{position:absolute;top:-12px;left:8%;width:120px;height:30px;background:rgba(227,161,179,.75);transform:rotate(-5deg);z-index:1}
+.facts{display:flex;flex-wrap:wrap;gap:10px;margin:28px 0 0}
+.facts span{font-size:14px;border:1px solid var(--line);border-radius:999px;padding:7px 14px}
+.facts b{font-weight:500}
+
+section{padding:120px 0 0}
+
+/* sticky notes tl;dr */
+.aside{display:flex;gap:18px;align-items:flex-start;margin:56px 0 0;max-width:820px;padding:22px 26px;border:2px dashed var(--pink);border-radius:18px 22px 16px 24px}
+.aside .hand{font-size:30px;color:var(--pink-ink);white-space:nowrap;transform:rotate(-4deg)}
+.aside p{margin:0;font-size:16px}
+.notes{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;margin-top:10px}
+.note{background:var(--blush);color:#1E2A3F;padding:26px 24px 28px;box-shadow:0 14px 26px -18px rgba(30,42,63,.45);position:relative}
+.note:nth-child(1){transform:rotate(-2deg)}
+.note:nth-child(2){transform:rotate(1.2deg);background:#F4EFE5}
+.note:nth-child(3){transform:rotate(-.8deg);background:var(--sage)}
+.note.rv.in:nth-child(1){transform:rotate(-2deg)}.note.rv.in:nth-child(2){transform:rotate(1.2deg)}.note.rv.in:nth-child(3){transform:rotate(-.8deg)}
+.note::before{content:"";position:absolute;top:-10px;left:50%;width:70px;height:22px;background:rgba(255,255,255,.55);transform:translateX(-50%) rotate(-3deg)}
+.note .hand{font-size:calc(26px * var(--hand-scale));display:block;margin-bottom:6px;color:var(--pink-ink)}
+.note p{font-size:15.5px;margin:0}
+
+/* problem: editorial */
+.big-quote{font-family:var(--f-head);font-weight:var(--head-weight);font-size:calc(clamp(36px,4.6vw,58px) * var(--head-scale));line-height:1.1;margin:40px 0 10px;max-width:980px}
+.big-quote::before{content:"“";color:var(--pink);font-size:1.6em;line-height:0;vertical-align:-.35em;margin-right:4px}
+.dropcap::first-letter{font-family:var(--f-head);float:left;font-size:4.2em;line-height:.8;margin:6px 10px 0 0;color:var(--pink-ink)}
+.two-col{columns:2;column-gap:48px}
+.two-col p{break-inside:avoid}
+
+/* research */
+.stats{display:flex;flex-wrap:wrap;gap:12px 48px;margin:30px 0 36px}
+.stat{display:flex;align-items:baseline;gap:10px}
+.stat b{font-family:var(--f-head);font-weight:var(--head-weight);font-size:calc(92px * var(--head-scale));line-height:.9}
+.stat span{font-family:var(--f-hand);font-size:calc(22px * var(--hand-scale));color:var(--pink-ink);max-width:130px;line-height:1.1}
+.polaroids{display:flex;gap:26px;justify-content:center;margin:20px 0 10px;flex-wrap:wrap}
+.polaroid{background:#fff;padding:10px 10px 44px;box-shadow:0 18px 30px -20px rgba(30,42,63,.5);width:300px;position:relative}
+.polaroid img{width:100%;height:210px;object-fit:cover}
+.polaroid span{position:absolute;bottom:10px;left:0;right:0;text-align:center;font-family:var(--f-hand);font-size:calc(20px * var(--hand-scale));color:#1E2A3F}
+.polaroid:nth-child(1){transform:rotate(-3deg)}.polaroid:nth-child(2){transform:rotate(2deg) translateY(14px)}.polaroid:nth-child(3){transform:rotate(-1deg)}
+.insights{margin-top:70px}
+.insight{display:grid;grid-template-columns:130px 1fr 1fr;gap:28px;padding:30px 0;border-top:1px solid var(--line);align-items:start}
+.insight .num{font-family:var(--f-head);font-size:calc(80px * var(--head-scale));line-height:.8;color:var(--pink)}
+.insight h3{font-size:calc(36px * var(--head-scale))}
+.insight blockquote{margin:0;font-family:var(--f-hand);font-size:calc(24px * var(--hand-scale));line-height:1.25;color:var(--pink-ink);transform:rotate(-1deg)}
+
+/* ideas */
+.concepts{display:flex;gap:14px;margin:36px 0 0;align-items:flex-start}
+.concept{flex:1;background:#fff;padding:8px 8px 34px;position:relative;box-shadow:0 12px 22px -16px rgba(30,42,63,.45);transition:transform .3s}
+.concept:hover{transform:rotate(0) translateY(-6px)!important}
+.concept:nth-child(odd){transform:rotate(-2deg)}.concept:nth-child(even){transform:rotate(2deg) translateY(10px)}
+.concept img{width:100%;height:150px;object-fit:cover}
+.concept p{position:absolute;bottom:6px;left:0;right:0;text-align:center;margin:0;font-family:var(--f-hand);font-size:calc(17px * var(--hand-scale));color:#1E2A3F}
+.concept.pick::after{content:"";position:absolute;inset:-14px;border:3px solid var(--pink);border-radius:48% 52% 46% 54%/55% 45% 55% 45%;transform:rotate(-3deg);pointer-events:none}
+.pick-note{position:absolute;top:-58px;left:10px;font-family:var(--f-hand);font-size:calc(24px * var(--hand-scale));color:var(--pink-ink);white-space:nowrap;transform:rotate(-6deg)}
+
+/* prototyping: timeline */
+.timeline{position:relative;margin:50px 0 0}
+.timeline svg.line{position:absolute;left:0;top:92px;width:100%;height:40px;overflow:visible}
+.timeline svg.line path{stroke:var(--ink);stroke-width:2;fill:none;stroke-dasharray:6 7}
+.tl{display:grid;grid-template-columns:repeat(4,1fr);gap:22px;position:relative}
+.tl .item{text-align:center}
+.tl .item .pic{width:200px;height:200px;margin:0 auto;border-radius:50%;overflow:hidden;background:#fff;border:6px solid var(--bg);box-shadow:0 0 0 2px var(--ink);transition:transform .4s}
+.tl .item:hover .pic{transform:scale(1.05) rotate(-3deg)}
+.tl .item img{width:100%;height:100%;object-fit:cover}
+.tl .item img.contain{object-fit:contain;padding:18px}
+.tl .item .n{font-family:var(--f-hand);color:var(--pink-ink);font-size:calc(22px * var(--hand-scale));margin:14px 0 0}
+.tl .item h3{font-size:calc(28px * var(--head-scale));margin:0 0 6px}
+.tl .item p{font-size:14.5px;color:var(--ink-soft);max-width:230px;margin:0 auto}
+
+/* testing: crossed out */
+.fixes{margin-top:34px}
+.fix{display:grid;grid-template-columns:1fr auto 1fr;gap:26px;align-items:center;padding:24px 0;border-top:1px dashed var(--line)}
+.fix p{margin:0}
+.fix .was{font-size:19px;color:var(--ink-soft)}
+.fix .was s{text-decoration:none;background:linear-gradient(transparent 48%,var(--pink-ink) 48%,var(--pink-ink) 56%,transparent 56%) no-repeat;background-size:0 100%;transition:background-size .8s ease .3s}
+.fix.in .was s{background-size:100% 100%}
+.fix .now{font-family:var(--f-hand);font-size:calc(27px * var(--hand-scale));line-height:1.2;color:var(--green)}
+.fix .dot{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;background:var(--card)}
+.fix .dot i{width:14px;height:14px;border-radius:50%;display:block}
+
+/* 3D explode */
+.explode{height:320vh;position:relative;margin-top:120px}
+.explode .stick{position:sticky;top:0;height:100vh;display:grid;grid-template-columns:1.3fr 1fr;align-items:center;gap:30px}
+.explode .stage{position:relative;height:92vh}
+.explode canvas{display:block}
+.explode .tags span{position:absolute;font-size:13px;white-space:nowrap;display:flex;align-items:center;gap:8px;opacity:0;transition:opacity .4s;pointer-events:none;color:var(--ink)}
+.explode .tags span::before{content:"";width:34px;height:1px;background:var(--ink)}
+.explode .copy{padding-top:18vh}
+.progress-hint{font-family:var(--f-hand);font-size:calc(22px * var(--hand-scale));color:var(--pink);transition:opacity .4s}
+
+/* simulator */
+.sim{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center}
+.sim-stage{position:relative;display:grid;place-items:center}
+.sim svg{width:min(460px,100%);height:auto;touch-action:none;user-select:none}
+#knob{cursor:grab;transform-box:fill-box;transform-origin:center}
+#knob:focus{outline:none}
+#knob:focus-visible circle.k-top{stroke:var(--pink);stroke-width:3}
+#spinner{cursor:grab;transform-box:fill-box;transform-origin:center}
+.sim .status{font-family:var(--f-hand);font-size:calc(30px * var(--hand-scale));color:var(--pink);min-height:1.3em;margin:0 0 8px}
+.sim .sub{font-size:15px;color:var(--ink-soft);min-height:3em}
+.sim .hints{position:absolute;inset:0;pointer-events:none}
+.sim .hints span{position:absolute;font-family:var(--f-hand);font-size:calc(21px * var(--hand-scale));color:var(--pink);white-space:nowrap}
+.sim-controls{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+.sim-controls button{font:inherit;font-size:14px;background:transparent;color:var(--ink);border:1px solid var(--line);border-radius:999px;padding:8px 16px;cursor:pointer}
+.sim-controls button:hover{border-color:var(--pink)}
+.legend{display:flex;gap:18px;margin-top:22px;font-size:14px;color:var(--ink-soft);flex-wrap:wrap}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;vertical-align:0}
+@keyframes blink{50%{opacity:.15}}
+
+/* video */
+.video{border-radius:18px;overflow:hidden;background:#000;margin-top:28px;position:relative}
+.video video{width:100%}
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px}
+.duo img,.duo video{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:14px}
+
+/* role */
+.role-intro{font-family:var(--f-head);font-weight:var(--head-weight);font-size:calc(clamp(30px,3.6vw,44px) * var(--head-scale));line-height:1.15;max-width:900px;margin:0 0 30px}
+.checks{list-style:none;padding:0;margin:0;display:grid;grid-template-columns:1fr 1fr;gap:6px 40px}
+.checks li{display:flex;gap:12px;align-items:flex-start;font-size:18px;padding:10px 0;border-bottom:1px dashed var(--line)}
+.checks svg{flex:none;margin-top:2px}
+.checks path{stroke:var(--pink-ink);stroke-width:3;fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:40;stroke-dashoffset:40;transition:stroke-dashoffset .6s ease}
+.checks.in li:nth-child(2) path{transition-delay:.25s}.checks.in li:nth-child(3) path{transition-delay:.5s}.checks.in li:nth-child(4) path{transition-delay:.75s}
+.checks.in path{stroke-dashoffset:0}
+.learned{display:grid;grid-template-columns:1fr 1fr;gap:48px;margin-top:70px}
+.learned .card{background:var(--card);border-radius:18px;padding:30px}
+.next-iter{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center;margin-top:48px}
+.puck-fig{margin:0;position:relative}.puck-fig img{width:100%;border-radius:14px}.puck-fig figcaption{font-size:13px;color:var(--ink-soft);margin-top:8px}.puck-fig .hand{font-size:26px;color:var(--pink-ink);margin-right:6px}
+.placeholder{aspect-ratio:4/3;border:2px dashed var(--line);border-radius:14px;display:flex;align-items:center;justify-content:center;text-align:center;color:var(--ink-soft);font-family:var(--f-hand);font-size:22px;padding:20px}
+
+.next{margin:140px 0 0;border-top:1px solid var(--line);padding:48px 0 70px;display:block;text-decoration:none}
+.next .big{font-family:var(--f-head);font-weight:var(--head-weight);font-size:calc(clamp(56px,8vw,104px) * var(--head-scale));line-height:1}
+.next:hover .big{color:var(--pink-ink)}
+
+
+@media (prefers-reduced-motion:reduce){.rv{opacity:1;transform:none;transition:none}html{scroll-behavior:auto}}
+@media (max-width:860px){
+  .wrap{padding:0 20px}
+  .notes,.learned,.next-iter,.sim,.duo{grid-template-columns:1fr}
+  .two-col{columns:1}
+  .insight{grid-template-columns:1fr}
+  .concepts{flex-wrap:wrap}.concept{flex:1 1 40%}
+  .tl{grid-template-columns:1fr 1fr;row-gap:40px}.timeline svg.line{display:none}.tl .item .pic{width:150px;height:150px}
+  .fix{grid-template-columns:1fr}
+  .checks{grid-template-columns:1fr}
+  .explode .stick{grid-template-columns:1fr;grid-template-rows:58vh auto;align-content:center}
+  .explode .stage{height:58vh}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <nav>
+    <a class="logo" href="index.html">Matilda F.</a>
+    <div class="links"><a href="index.html#work">Work</a><a href="#">About</a><a href="index.html#contact">Contact</a></div>
+  </nav>
+
+  <header data-bg="#EAE2D3">
+    <a class="back" href="index.html#work">← All work</a>
+    <p class="kicker">02 · IN1060 · Spring 2025</p>
+    <div class="title-row"><h1>Timebox</h1><span class="hand">a timer you can feel ↓</span></div>
+    <p class="lede">A screen-free focus timer for adults with ADHD. Turn the knob to set a focus session, and a <span class="u">ring of light</span> shows how much time is left.</p>
+    <div class="hero-img rv"><div class="tape"></div><img src="cs/tb_desk_sun.jpg" alt="Timebox on a sunlit desk with a lamp and a glass of matcha"></div>
+    <p class="caption">Visualisation of the final prototype, built from our 3D-print files.</p>
+    <div class="facts">
+      <span><b>Main roles:</b> workshops, Arduino and LED code, visual design, 3D printing</span>
+      <span><b>Team:</b> 5 interaction design students</span>
+      <span><b>When:</b> Feb – Jun 2025</span>
+      <span><b>Methods:</b> interviews, co-design, prototyping, usability testing</span>
+    </div>
+  </header>
+
+  <section data-bg="#EAE2D3">
+    <div class="notes">
+      <div class="note rv"><span class="hand">the problem</span><p>Adults with ADHD in full-time jobs lose track of time, skip breaks and burn out. Focus apps don't help, because the phone is the distraction.</p></div>
+      <div class="note rv"><span class="hand">what we did</span><p>Designed <em>with</em> two users and an expert from ADHD Norge: 3 interviews, 4 workshops and 4 rounds of prototypes.</p></div>
+      <div class="note rv"><span class="hand">the result</span><p>A timer with no screen. Light instead of numbers, 45-minute sessions and a fidget spinner in the base.</p></div>
+    </div>
+    <div class="aside rv">
+      <span class="hand">good to know</span>
+      <p>The course required us to build with Arduino, and screens were not allowed. It started as a rule, but our users proved it was the right choice for them too: their phones were exactly what pulled them out of focus.</p>
+    </div>
+  </section>
+
+  <section data-bg="#F3DDE1">
+    <span class="label">the problem</span>
+    <h2 class="narrow">Hyperfocus feels productive, <span class="circ">until it isn't<svg viewBox="0 0 300 80" preserveAspectRatio="none"><path d="M20 44 C 30 8, 250 2, 282 30 C 300 58, 150 80, 50 70 C 10 64, 8 40, 40 22"/></svg></span></h2>
+    <div class="two-col rv">
+      <p class="dropcap">Our users described two sides of the same problem. Boring tasks were hard to start. Interesting ones pulled them into hyperfocus for hours, with no breaks and no sense of time.</p>
+      <p>Both had tried Pomodoro apps and to-do lists and given up. The phone they needed for the timer was the same phone that distracted them. <span class="hl">The course didn't allow screens anyway, and this showed us why that was right.</span></p>
+    </div>
+    <p class="big-quote rv">We are very strict about never having sessions longer than 45 minutes. Then there's a break, no matter what.</p>
+    <p class="caption">Domain expert, ADHD Norge (translated from Norwegian)</p>
+  </section>
+
+  <section data-bg="#EFE8DA">
+    <span class="label">research</span>
+    <h2>Designing <span class="u">with</span> the users, not just for them</h2>
+    <p class="narrow muted">We interviewed two adults with ADHD and a domain expert, then ran four co-design workshops with the same two users. They explored materials, sketched their own ideas, tested prototypes and evaluated the final product.</p>
+    <div class="stats rv">
+      <div class="stat"><b>3</b><span>interviews</span></div>
+      <div class="stat"><b>4</b><span>co-design workshops</span></div>
+      <div class="stat"><b>2</b><span>users, start to finish</span></div>
+      <div class="stat"><b>1</b><span>expert from ADHD Norge</span></div>
+    </div>
+    <div class="polaroids rv">
+      <div class="polaroid"><img src="cs/tb_affinity.jpg" alt="Affinity diagram with sticky notes"><span>sorting it all out</span></div>
+      <div class="polaroid"><img src="cs/tb_ws_materials.jpg" alt="Workshop exploring materials"><span>workshop 1: materials</span></div>
+      <div class="polaroid"><img src="cs/tb_ws_crazy8.jpg" alt="Users sketching in a Crazy 8 session"><span>workshop 2: their ideas</span></div>
+    </div>
+    <div class="insights">
+      <div class="insight rv"><span class="num">01</span><div><h3>No screens</h3><p class="muted">Apps and phones pulled users away from work. The course's no-screen rule turned out to be exactly what they needed.</p></div><blockquote>"Too much input, light, sound, disturbances – it works badly."</blockquote></div>
+      <div class="insight rv"><span class="num">02</span><div><h3>Protect the break</h3><p class="muted">Hyperfocus led to exhaustion. The expert's rule: never more than 45 minutes without a break.</p></div><blockquote>"I end up not taking enough breaks, and I'm exhausted after hyperfocus."</blockquote></div>
+      <div class="insight rv"><span class="num">03</span><div><h3>Something to fidget with</h3><p class="muted">Both users were always fidgeting. It helped them focus, so it had to be part of the product, not a distraction from it.</p></div><blockquote>"I always have to have something to fiddle with."</blockquote></div>
+      <p class="caption">Quotes translated from Norwegian.</p>
+    </div>
+  </section>
+
+  <section data-bg="#DCE3D3">
+    <span class="label">ideas</span>
+    <h2>Five concepts, one clear favourite</h2>
+    <p class="narrow muted">We turned the insights into five low-fidelity concepts and let the users vote. They picked the puck: easy to carry, and it shows time as <span class="hl">colour instead of numbers</span>.</p>
+    <div class="concepts rv" style="margin-top:70px">
+      <div class="concept pick"><span class="pick-note">the users' pick! ↓</span><img src="cs/tb_c_puck.jpg" alt="Sketch of a puck-shaped timer"><p>timer puck</p></div>
+      <div class="concept"><img src="cs/tb_c_buddy.jpg" alt="Sketch of Big Buddy micromanager"><p>big buddy</p></div>
+      <div class="concept"><img src="cs/tb_c_bear.jpg" alt="Sketch of a keychain bear"><p>keychain bear</p></div>
+      <div class="concept"><img src="cs/tb_c_todo.jpg" alt="Sketch of a to-do list with lights"><p>to-do lights</p></div>
+      <div class="concept"><img src="cs/tb_c_candy.jpg" alt="Sketch of a to-do list with candy"><p>candy to-do</p></div>
+    </div>
+  </section>
+
+  <section data-bg="#EAE2D3">
+    <span class="label">prototyping</span>
+    <h2>Four rounds, each shaped by the users</h2>
+    <div class="timeline rv">
+      <svg class="line" viewBox="0 0 1000 40" preserveAspectRatio="none"><path d="M60 20 C 200 0, 300 40, 420 20 S 650 0, 760 22 S 900 36, 960 18"/></svg>
+      <div class="tl">
+        <div class="item"><div class="pic"><img class="contain" src="cs/tb_i_sketch.jpg" alt="Sketch of the puck"></div><p class="n">01</p><h3>Sketch</h3><p>Shape, and where the light and button could go.</p></div>
+        <div class="item"><div class="pic"><img src="cs/tb_i_cardboard.jpg" alt="Cardboard prototype"></div><p class="n">02</p><h3>Cardboard</h3><p>How the LED, button and fidget spinner fit together.</p></div>
+        <div class="item"><div class="pic"><img src="cs/tb_i_yellow.jpg" alt="Yellow 3D-printed prototype"></div><p class="n">03</p><h3>First 3D print</h3><p>Users could finally hold it. Too rough, and they wanted a calmer colour.</p></div>
+        <div class="item"><div class="pic"><img src="cs/tb_studio.jpg" alt="Final prototype"></div><p class="n">04</p><h3>Final</h3><p>Smooth and neutral, green for focus, red for breaks, spinner in the base.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section data-bg="#F3DDE1">
+    <span class="label">testing</span>
+    <h2>What testing changed</h2>
+    <p class="narrow muted">In the last workshop, users completed tasks like "start a focus session" while we observed. They pressed the button again and again without knowing they were restarting the timer, and nobody noticed when a break began.</p>
+    <div class="fixes">
+      <div class="fix rv"><p class="was"><s>Users couldn't tell if it was on</s></p><span class="dot"><i style="background:#6FEB8C;box-shadow:0 0 10px #6FEB8C"></i></span><p class="now">one green light always stays on</p></div>
+      <div class="fix rv"><p class="was"><s>Unclear when no time was set</s></p><span class="dot"><i style="background:#6FEB8C;animation:blink 1s steps(1) infinite"></i></span><p class="now">the first light blinks until you pick a time</p></div>
+      <div class="fix rv"><p class="was"><s>Nobody noticed the break starting</s></p><span class="dot"><i style="background:#FF5A6E;box-shadow:0 0 10px #FF5A6E"></i></span><p class="now">the whole ring flashes red for 5 seconds</p></div>
+    </div>
+  </section>
+</div>
+
+<div class="explode" id="explode" data-bg="#22344F" data-theme="dark">
+  <div class="stick wrap">
+    <div class="stage" id="stage"><div class="tags" id="tags"></div></div>
+    <div class="copy">
+      <span class="label">how it works</span>
+      <h2>What's inside</h2>
+      <p class="muted">An Arduino drives a ring of 27 LEDs, controlled by a rotary encoder under the knob. We first planned a disc that physically rotated back as time ran out, but it was too complex to build reliably. So we learned to use a rotary encoder, a component none of us had used before.</p>
+      <p class="progress-hint" id="explodeHint">keep scrolling to open it ↓</p>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+  <section data-bg="#22344F" data-theme="dark" id="try" style="padding-top:40px">
+    <div class="sim">
+      <div class="sim-stage">
+        <svg id="simsvg" viewBox="-200 -200 400 400" aria-label="Interactive Timebox seen from above">
+          <defs>
+            <filter id="glow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+            <pattern id="speck" width="40" height="40" patternUnits="userSpaceOnUse"><rect width="40" height="40" fill="#E9E5DC"/><circle cx="5" cy="7" r="1" fill="#8d897f"/><circle cx="22" cy="15" r=".8" fill="#5f5c57"/><circle cx="33" cy="31" r="1.1" fill="#9a968d"/><circle cx="12" cy="30" r=".7" fill="#5f5c57"/><circle cx="30" cy="4" r=".6" fill="#8d897f"/></pattern>
+          </defs>
+          <g id="spinner"><path id="spinnerPath" fill="url(#speck)" stroke="rgba(0,0,0,.12)"/></g>
+          <circle r="150" fill="#E6E1D6" stroke="rgba(0,0,0,.08)"/>
+          <circle r="147" fill="#EFEBE3"/>
+          <g id="leds" filter="url(#glow)"></g>
+          <g id="knob" tabindex="0" role="slider" aria-label="Knob: turn to set focus time, press Enter to start" aria-valuemin="0" aria-valuemax="44" aria-valuenow="0">
+            <circle r="46" fill="#DDD7CB"/>
+            <g id="knurl"></g>
+            <circle class="k-top" r="36" fill="#F4F0E8" stroke="rgba(0,0,0,.08)"/>
+            <circle r="26" fill="none" stroke="rgba(0,0,0,.06)" stroke-width="2"/>
+            <line x1="0" y1="-30" x2="0" y2="-20" stroke="#B9B2A4" stroke-width="3" stroke-linecap="round"/>
+          </g>
+        </svg>
+        <div class="hints">
+          <span style="left:-8%;top:16%">drag to turn ↘</span>
+          <span style="left:44%;top:-4%">click the knob to start ↓</span>
+          <span style="left:-6%;bottom:6%">spin the base! ↗</span>
+        </div>
+      </div>
+      <div>
+        <span class="label">try it yourself</span>
+        <h2>Set a focus session</h2>
+        <p class="status" id="status">no time set, turn me!</p>
+        <p class="sub" id="sub">Drag the knob around (or use the arrow keys), then click it to start. The demo runs fast: one second is one minute. And no, you can't skip the break.</p>
+        <div class="sim-controls">
+          <button id="bL" aria-label="Turn knob left">⟲ turn</button>
+          <button id="bR" aria-label="Turn knob right">turn ⟳</button>
+          <button id="bP">press knob</button>
+        </div>
+        <div class="legend"><span><i style="background:#6FEB8C"></i>focus</span><span><i style="background:#FF5A6E"></i>break</span><span><i style="background:#6FEB8C;animation:blink 1s steps(1) infinite"></i>no time set</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section data-bg="#EAE2D3">
+    <span class="label">final product</span>
+    <h2>See the real one in action</h2>
+    <div class="video rv"><video controls preload="metadata" poster="cs/tb_video_poster.jpg" src="cs/tb_video.mp4"></video></div>
+    <div class="duo">
+      <video autoplay muted loop playsinline src="cs/tb_loop.mp4" aria-label="The LED ring counting down"></video>
+      <img src="cs/tb_desk_green.jpg" alt="Timebox on a desk pad next to a keyboard and mouse">
+    </div>
+  </section>
+
+  <section data-bg="#DCE3D3">
+    <span class="label">my role</span>
+    <p class="role-intro">I was involved in every part of the project, from interviews to the final print. These were my <span class="u">main roles</span>:</p>
+    <ul class="checks">
+      <li><svg width="24" height="24" viewBox="0 0 24 24"><path d="M3 13 L9 19 L21 5"/></svg>Planning and facilitating the co-design workshops</li>
+      <li><svg width="24" height="24" viewBox="0 0 24 24"><path d="M3 13 L9 19 L21 5"/></svg>Coding the Arduino, LEDs and rotary encoder</li>
+      <li><svg width="24" height="24" viewBox="0 0 24 24"><path d="M3 13 L9 19 L21 5"/></svg>Visual design of the prototypes</li>
+      <li><svg width="24" height="24" viewBox="0 0 24 24"><path d="M3 13 L9 19 L21 5"/></svg>3D modelling and printing the housing</li>
+    </ul>
+    <div class="learned">
+      <div class="card rv"><span class="label">what I learned</span><p>How design works <span class="hl">in practice</span>, not just in theory. Our users often wanted something different from what we as designers thought was best, and they were usually right. Testing also showed that things we found obvious, like pressing the knob to start, weren't intuitive at all.</p></div>
+      <div class="card rv"><span class="label">about teamwork</span><p>Five people with different ideas need clear roles and a shared plan. We had neither for the first half of the project. Next time I'd push for a clear requirement spec and a named lead from day one, so we can spend the energy on the users instead.</p></div>
+    </div>
+    <div class="next-iter rv">
+      <div>
+        <span class="label">what I'd do next</span>
+        <h3 style="font-size:calc(40px * var(--head-scale))">Shrink it to a hockey puck</h3>
+        <p class="muted">The concept was always a puck small enough to carry between desk and meeting room. The prototype grew to 15 cm because the Arduino and wiring had to fit inside. With a custom circuit board, the same interaction could fit in a puck.</p>
+      </div>
+      <figure class="puck-fig"><img src="cs/tb_puck.jpg" alt="Concept visualisation: a Timebox the size of a hockey puck on a desk"><figcaption><span class="hand">concept</span> Visualisation of a puck-sized next iteration.</figcaption></figure>
+    </div>
+  </section>
+
+  <a class="next" href="vaersikret.html" data-bg="#EAE2D3">
+    <p class="kicker">Next project</p><span class="big">VærSikret →</span>
+  </a>
+</div>
+
+
+<script>
+const qs = new URLSearchParams(location.search);
+// reveal on scroll
+const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); }), { threshold: .25 });
+document.querySelectorAll('.rv, .circ, .checks, .fix').forEach(el => io.observe(el));
+
+// background colour fades between sections
+const zones = [...document.querySelectorAll('[data-bg]')];
+function pickBg() {
+  const mid = innerHeight * .5; let cur = zones[0];
+  for (const z of zones) if (z.getBoundingClientRect().top <= mid) cur = z;
+  document.body.style.backgroundColor = cur.dataset.bg;
+  if (cur.dataset.theme === 'dark') document.body.dataset.theme = 'dark'; else delete document.body.dataset.theme;
+}
+addEventListener('scroll', pickBg, { passive: true }); pickBg();
+
+// Timebox simulator: 27 LEDs, max 45 min focus + 15 min break fills the ring
+(() => {
+  const N = 27, PER = 60 / N, MAXF = 20, R = 120, NS = 'http://www.w3.org/2000/svg';
+  const G = '#6FEB8C', RED = '#FF5A6E', OFF = '#D6D0C4';
+  const svg = document.getElementById('simsvg'), ledsG = document.getElementById('leds');
+  const leds = [];
+  for (let i = 0; i < N; i++) {
+    const a = -Math.PI / 2 + i / N * Math.PI * 2, c = document.createElementNS(NS, 'circle');
+    c.setAttribute('cx', Math.cos(a) * R); c.setAttribute('cy', Math.sin(a) * R); c.setAttribute('r', 9);
+    ledsG.appendChild(c); leds.push(c);
+  }
+  const knurl = document.getElementById('knurl');
+  for (let i = 0; i < 40; i++) { const l = document.createElementNS(NS, 'rect'); l.setAttribute('x', -1.5); l.setAttribute('y', -46); l.setAttribute('width', 3); l.setAttribute('height', 9); l.setAttribute('fill', '#CFC8BA'); l.setAttribute('transform', `rotate(${i * 9})`); knurl.appendChild(l); }
+  (() => { const RS = 185, nr = 13, half = Math.asin(nr / RS), p = a => `${(Math.cos(a) * RS).toFixed(2)} ${(Math.sin(a) * RS).toFixed(2)}`; let d = '';
+    for (let i = 0; i < 4; i++) { const c = i * Math.PI / 2, nc = c + Math.PI / 2;
+      if (i === 0) d += `M ${p(c + half)} `;
+      d += `A ${RS} ${RS} 0 0 1 ${p(nc - half)} A ${nr} ${nr} 0 0 0 ${p(nc + half)} `; }
+    document.getElementById('spinnerPath').setAttribute('d', d + 'Z'); })();
+
+  const status = document.getElementById('status'), sub = document.getElementById('sub'), knob = document.getElementById('knob');
+  const IDLE_SUB = 'Drag the knob around (or use the arrow keys), then click it to start. The demo runs fast: one second is one minute.';
+  let hold = 0, mode = 'idle', focus = 0, remaining = 0, brk = 0, flashT = 0, knobAngle = 0, acc = 0;
+  const breakFor = f => f ? Math.max(1, Math.round(f / 3)) : 0, mins = n => Math.round(n * PER);
+  function turn(dir) {
+    if (mode !== 'idle' && mode !== 'set') return;
+    focus = Math.max(0, Math.min(MAXF, focus + dir)); mode = focus ? 'set' : 'idle';
+    knobAngle += dir * 18; knob.style.transform = `rotate(${knobAngle}deg)`; knob.setAttribute('aria-valuenow', mins(focus));
+    status.textContent = focus ? `${mins(focus)} min focus, then ${mins(breakFor(focus))} min break` : 'no time set, turn me!';
+    sub.textContent = focus ? 'Green is your focus time, red is the break that follows. Click the knob to start.' : IDLE_SUB;
+  }
+  function press() {
+    if (mode === 'set') { mode = 'focus'; remaining = mins(focus); brk = mins(breakFor(focus)); acc = 0; status.textContent = 'focus time!'; sub.textContent = 'Only the green part stays lit and counts down. The break comes after, no matter what.'; }
+    else if (mode === 'focus') { hold = performance.now() + 3000; status.textContent = 'no skipping the break!'; sub.textContent = 'The break always comes after a focus session. Hyperfocus makes breaks easy to skip, so the Timebox never lets you.'; }
+    else if (mode === 'flash' || mode === 'break') { status.textContent = "breaks can't be skipped"; sub.textContent = 'Taking the break is the whole point. Stretch, drink some water, look away from the screen.'; }
+  }
+  let last = performance.now();
+  function frame(now) {
+    const dt = Math.min(.25, (now - last) / 1000); last = now; // no jumps after a hidden tab
+    if (mode === 'focus' || mode === 'break') {
+      acc += dt; while (acc >= 1) { acc -= 1; remaining = Math.max(0, remaining - 1); }
+      if (remaining === 0) {
+        if (mode === 'focus') { mode = 'flash'; flashT = 0; status.textContent = 'break time!'; sub.textContent = 'The whole ring flashes red for 5 seconds, so you notice the break even in hyperfocus.'; }
+        else { mode = 'idle'; focus = 0; status.textContent = 'break over. ready again'; sub.textContent = 'The first light blinks to show the Timebox is on but no time is set.'; }
+      } else if (now > hold) status.textContent = `${mode === 'focus' ? 'focus' : 'break'}: ${remaining} min left`;
+    }
+    if (mode === 'flash') { flashT += dt; if (flashT >= 5) { mode = 'break'; remaining = brk; acc = 0; } }
+    const blink = Math.floor(now / 500) % 2 === 0;
+    for (let i = 0; i < N; i++) {
+      let col = OFF;
+      if (mode === 'idle') col = i === 0 && blink ? G : OFF;
+      else if (mode === 'set') col = i < focus ? G : i < focus + breakFor(focus) ? RED : OFF;
+      else if (mode === 'focus') col = i < Math.ceil(remaining / PER) ? G : OFF;
+      else if (mode === 'flash') col = blink ? RED : OFF;
+      else if (mode === 'break') col = i < Math.ceil(remaining / PER) ? RED : OFF;
+      leds[i].setAttribute('fill', col);
+    }
+    spin();
+    requestAnimationFrame(frame);
+  }
+  const pt = e => { const r = svg.getBoundingClientRect(); return [(e.clientX - r.left) / r.width * 400 - 200, (e.clientY - r.top) / r.height * 400 - 200]; };
+  const dAng = (a, b) => { let d = a - b; if (d > Math.PI) d -= 2 * Math.PI; if (d < -Math.PI) d += 2 * Math.PI; return d; };
+  let drag = null;
+  knob.addEventListener('pointerdown', e => { knob.setPointerCapture(e.pointerId); const [x, y] = pt(e); drag = { a: Math.atan2(y, x), moved: 0 }; e.stopPropagation(); });
+  knob.addEventListener('pointermove', e => { if (!drag) return; const [x, y] = pt(e), a = Math.atan2(y, x), d = dAng(a, drag.a); if (Math.abs(d) >= .28) { drag.moved += Math.abs(d); turn(Math.sign(d)); drag.a = a; } });
+  knob.addEventListener('pointerup', () => { if (drag && drag.moved === 0) press(); drag = null; });
+  knob.addEventListener('wheel', e => { e.preventDefault(); turn(e.deltaY < 0 ? 1 : -1); }, { passive: false });
+  knob.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowUp') { turn(1); e.preventDefault(); }
+    if (e.key === 'ArrowLeft' || e.key === 'ArrowDown') { turn(-1); e.preventDefault(); }
+    if (e.key === 'Enter' || e.key === ' ') { press(); e.preventDefault(); }
+  });
+  document.getElementById('bL').onclick = () => turn(-1);
+  document.getElementById('bR').onclick = () => turn(1);
+  document.getElementById('bP').onclick = press;
+  // the base is a fidget spinner: drag and let go
+  const spinner = document.getElementById('spinner'); let sAng = 0, sVel = 0, sDrag = null;
+  spinner.addEventListener('pointerdown', e => { spinner.setPointerCapture(e.pointerId); const [x, y] = pt(e); sDrag = { a: Math.atan2(y, x), t: performance.now() }; sVel = 0; });
+  spinner.addEventListener('pointermove', e => { if (!sDrag) return; const [x, y] = pt(e), a = Math.atan2(y, x), d = dAng(a, sDrag.a), now = performance.now(); sVel = d / Math.max(1, now - sDrag.t) * 16; sAng += d * 180 / Math.PI; sDrag = { a, t: now }; });
+  spinner.addEventListener('pointerup', () => { sDrag = null; });
+  function spin() { if (!sDrag) { sAng += sVel * 180 / Math.PI; sVel *= .985; } spinner.style.transform = `rotate(${sAng}deg)`; }
+  requestAnimationFrame(frame);
+})();
+</script>
+
+<script type="module">
+// scroll-driven exploded view of the Timebox, built from the team's STL files
+import * as THREE from 'three';
+import { STLLoader } from 'three/addons/loaders/STLLoader.js';
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+import { toCreasedNormals } from 'three/addons/utils/BufferGeometryUtils.js';
+
+const stage = document.getElementById('stage'), tagsEl = document.getElementById('tags'), sec = document.getElementById('explode'), hint = document.getElementById('explodeHint');
+const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+renderer.toneMapping = THREE.NeutralToneMapping; renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.VSMShadowMap;
+stage.prepend(renderer.domElement);
+const scene = new THREE.Scene();
+scene.environment = new THREE.PMREMGenerator(renderer).fromScene(new RoomEnvironment(), .04).texture;
+scene.environmentIntensity = .6;
+const camera = new THREE.PerspectiveCamera(30, 1, 10, 5000);
+const sun = new THREE.DirectionalLight(0xfff4e6, 1.4); sun.position.set(-250, 1300, 300); sun.castShadow = true;
+sun.shadow.mapSize.set(2048, 2048); sun.shadow.radius = 14; sun.shadow.blurSamples = 20;
+Object.assign(sun.shadow.camera, { left: -700, right: 700, top: 700, bottom: -700, near: 10, far: 3000 });
+scene.add(sun);
+const catcher = new THREE.Mesh(new THREE.PlaneGeometry(6000, 6000), new THREE.ShadowMaterial({ opacity: .3 }));
+catcher.rotation.x = -Math.PI / 2; catcher.receiveShadow = true; scene.add(catcher);
+
+const PLA = (x = {}) => new THREE.MeshPhysicalMaterial({ color: 0xE6E1D6, roughness: .68, sheen: .25, sheenRoughness: .8, ...x });
+const canvasTex = (w, h, draw) => { const c = document.createElement('canvas'); c.width = w; c.height = h; draw(c.getContext('2d')); return new THREE.CanvasTexture(c); };
+const speck = rep => { const t = canvasTex(512, 512, g => { g.fillStyle = '#E9E5DC'; g.fillRect(0, 0, 512, 512); for (let i = 0; i < 2600; i++) { const v = Math.random(); g.fillStyle = v < .5 ? 'rgba(60,58,55,.55)' : v < .8 ? 'rgba(150,146,138,.5)' : 'rgba(255,255,255,.8)'; g.beginPath(); g.arc(Math.random() * 512, Math.random() * 512, Math.random() * 1.3 + .3, 0, 7); g.fill(); } }); t.colorSpace = THREE.SRGBColorSpace; t.wrapS = t.wrapT = THREE.RepeatWrapping; t.repeat.set(rep, rep); return PLA({ map: t, color: 0xffffff, roughness: .8 }); };
+const flute = canvasTex(2048, 8, g => { for (let x = 0; x < 2048; x++) { const n = Math.sin(x / 2048 * 150 * Math.PI * 2); g.fillStyle = `rgb(${Math.round(128 + n * 60)},128,255)`; g.fillRect(x, 0, 1, 8); } }); flute.wrapS = flute.wrapT = THREE.RepeatWrapping;
+const ledTex = emissive => { const t = canvasTex(1024, 1024, g => { g.fillStyle = emissive ? '#000' : '#E6E1D6'; g.fillRect(0, 0, 1024, 1024); const cx = 512, R = 512 / 75;
+  for (let i = 0; i < 360; i++) { const tt = i / 360, a0 = -Math.PI / 2 + tt * Math.PI * 2, a1 = a0 + Math.PI * 2 / 360 + .004, m = Math.min(1, Math.max(0, (tt - .72) / .05 + .5));
+    const col = [70, 240, 110].map((v, k) => Math.round(v * (1 - m) + [255, 60, 85][k] * m)), gr = g.createRadialGradient(cx, cx, 58 * R, cx, cx, 73 * R), base = emissive ? '0,0,0' : '230,225,214';
+    gr.addColorStop(0, `rgb(${base})`); gr.addColorStop(.2, `rgb(${col})`); gr.addColorStop(.75, `rgb(${col})`); gr.addColorStop(1, `rgb(${base})`);
+    g.fillStyle = gr; g.beginPath(); g.arc(cx, cx, 73 * R, a0, a1); g.arc(cx, cx, 58 * R, a1, a0, true); g.closePath(); g.fill(); } }); t.colorSpace = THREE.SRGBColorSpace; return t; };
+function spinnerGeo() {
+  const R = 86, n = 4, nr = 7, shape = new THREE.Shape(), half = Math.asin(nr / R);
+  for (let i = 0; i < n; i++) { const c = i / n * Math.PI * 2, s0 = c + half, s1 = c + Math.PI * 2 / n - half, nc = c + Math.PI * 2 / n;
+    if (i === 0) shape.moveTo(Math.cos(s0) * R, Math.sin(s0) * R);
+    shape.absarc(0, 0, R, s0, s1, false); shape.absarc(Math.cos(nc) * R, Math.sin(nc) * R, nr, nc - Math.PI / 2 - half, nc + Math.PI / 2 + half, true); }
+  const hole = new THREE.Path(); hole.absarc(0, 0, 42, 0, Math.PI * 2, true); shape.holes.push(hole);
+  const g = new THREE.ExtrudeGeometry(shape, { depth: 6, bevelEnabled: true, bevelThickness: .6, bevelSize: .6, bevelSegments: 2, curveSegments: 96 });
+  g.rotateX(-Math.PI / 2); g.translate(0, -.6, 0); return g;
+}
+function knob() {
+  const grp = new THREE.Group(), m = PLA(), sk = new THREE.CylinderGeometry(21, 21.5, 14, 120, 1), p = sk.attributes.position;
+  for (let i = 0; i < p.count; i++) { const x = p.getX(i), z = p.getZ(i); if (Math.hypot(x, z) < 5) continue; const k = 1 + .035 * Math.max(0, Math.cos(Math.atan2(z, x) * 40)); p.setX(i, x * k); p.setZ(i, z * k); }
+  sk.computeVertexNormals(); const s = new THREE.Mesh(sk, m); s.position.y = 7; grp.add(s);
+  grp.add(new THREE.Mesh(new THREE.LatheGeometry([[0, 23.2], [14, 23.6], [18.5, 22.8], [20.3, 21], [20.8, 18], [20.8, 14], [0, 14]].map(([x, y]) => new THREE.Vector2(x, y)), 96), m));
+  return grp;
+}
+
+const loader = new STLLoader();
+const load = f => new Promise((res, rej) => loader.load('models/' + f, res, undefined, rej));
+const [cyl, led, mid] = await Promise.all(['cyl.stl', 'led.stl', 'mid.stl'].map(load));
+cyl.translate(-75, 0, 0);
+const stl = (geo, mat) => { geo.rotateX(-Math.PI / 2); geo = toCreasedNormals(geo, Math.PI / 5); return new THREE.Mesh(geo, mat); };
+const dev = new THREE.Group(); scene.add(dev);
+const parts = [];
+function part(mesh, a, b, label, mid = 3) { mesh.traverse(o => { if (o.isMesh) o.castShadow = o.receiveShadow = true; }); mesh.position.y = a; dev.add(mesh); parts.push({ mesh, a, b, label, mid }); }
+part(new THREE.Mesh(new THREE.CylinderGeometry(75, 75, 2, 128), speck(3)), 1, 1, 'Bottom plate');
+part(new THREE.Mesh(spinnerGeo(), speck(.012)), 2.6, 34, 'Fidget spinner');
+part(new THREE.Mesh(new THREE.CylinderGeometry(38, 38, 6, 96), speck(2)), 5, 73, 'Axle for the spinner');
+part(new THREE.Mesh(new THREE.CylinderGeometry(74.2, 74.2, 1, 128), speck(3)), 8.5, 100.5, 'Layer above the spinner');
+const body = stl(cyl, PLA({ normalMap: flute, normalScale: new THREE.Vector2(.35, .35) }));
+{ const pos = body.geometry.attributes.position, uv = new Float32Array(pos.count * 2); for (let i = 0; i < pos.count; i++) { uv[i * 2] = Math.atan2(pos.getZ(i), pos.getX(i)) / (Math.PI * 2) + .5; uv[i * 2 + 1] = pos.getY(i) / 84; } body.geometry.setAttribute('uv', new THREE.BufferAttribute(uv, 2)); }
+body.scale.y = 96 / 84; part(body, 9, 126, 'Body', 48);
+part(stl(mid, PLA()), 50, 254, 'Shelf for the Arduino');
+part(stl(led, PLA()), 93, 284, 'LED holder');
+const strip = new THREE.Group();
+strip.add(new THREE.Mesh(new THREE.CylinderGeometry(72.9, 72.9, 7, 160, 1, true), new THREE.MeshStandardMaterial({ color: 0x1a1a1a, roughness: .4, side: THREE.DoubleSide })));
+const ledMat = new THREE.MeshStandardMaterial({ color: 0xffffff, emissive: 0x6FEB8C, emissiveIntensity: 2.4 });
+for (let i = 0; i < 27; i++) { const a = i / 27 * Math.PI * 2, b = new THREE.Mesh(new THREE.BoxGeometry(5, 5, 1.6), ledMat); b.position.set(Math.cos(a) * 73.6, 0, Math.sin(a) * 73.6); b.lookAt(Math.cos(a) * 200, 0, Math.sin(a) * 200); strip.add(b); }
+part(strip, 99, 322, 'NeoPixel strip, 27 LEDs');
+const topMat = new THREE.MeshPhysicalMaterial({ map: ledTex(false), emissiveMap: ledTex(true), emissive: 0xffffff, emissiveIntensity: 1.6, roughness: .55 });
+part(new THREE.Mesh(new THREE.CylinderGeometry(75, 75, 2, 128, 1), [PLA(), topMat, PLA()]), 106, 357, 'Thin top layer');
+part(knob(), 107, 386, 'Knob on the rotary encoder', 12);
+
+const tagEls = parts.map(p => { const s = document.createElement('span'); s.textContent = p.label; tagsEl.appendChild(s); return s; });
+const ease = t => t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+function size() { const w = stage.clientWidth, h = stage.clientHeight; renderer.setSize(w, h); camera.aspect = w / h; camera.updateProjectionMatrix(); }
+addEventListener('resize', size); size();
+const v = new THREE.Vector3();
+(function loop() {
+  const r = sec.getBoundingClientRect(), total = sec.offsetHeight - innerHeight;
+  const t = Math.min(1, Math.max(0, -r.top / total)), n = parts.length;
+  parts.forEach((p, i) => { const d = (n - 1 - i) / n * .35, k = ease(Math.min(1, Math.max(0, (t - d) / .65))); p.mesh.position.y = p.a + (p.b - p.a) * k; });
+  topMat.emissiveIntensity = 1.6 * Math.max(0, 1 - t * 4);
+  // keep the whole stack in frame as it grows
+  const top = Math.max(...parts.map(p => p.mesh.position.y)) + 30, e = ease(t), ang = .8 - e * .2;
+  const dist = Math.max(700, top * 2.35 + 180), cy = top * .5;
+  camera.position.set(Math.sin(ang) * dist, cy + 230 - e * 60, Math.cos(ang) * dist);
+  camera.lookAt(0, cy, 0);
+  dev.rotation.y = .4 + t * .8;
+  renderer.render(scene, camera);
+  const W = renderer.domElement.clientWidth, H = renderer.domElement.clientHeight;
+  parts.forEach((p, i) => { v.set(0, p.mesh.position.y + p.mid, 0).applyMatrix4(dev.matrixWorld).project(camera);
+    tagEls[i].style.left = ((v.x * .5 + .5) * W + W * .17) + 'px'; tagEls[i].style.top = ((-v.y * .5 + .5) * H - 9) + 'px';
+    tagEls[i].style.opacity = t > .6 ? Math.min(1, (t - .6) * 5) : 0; });
+  hint.style.opacity = t > .85 ? 0 : 1;
+  requestAnimationFrame(loop);
+})();
+</script>
+</body>
+</html>
