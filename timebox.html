@@ -357,7 +357,7 @@ section{padding:120px 0 0}
         <span class="label">try it yourself</span>
         <h2>Set a focus session</h2>
         <p class="status" id="status">no time set, turn me!</p>
-        <p class="sub" id="sub">Drag the knob around (or use the arrow keys), then click it to start. Click again during focus to restart. The demo runs fast: one second is one minute. And no, you can't skip the break.</p>
+        <p class="sub" id="sub">Drag the knob around (or use the arrow keys), then click it to start. Chose the wrong time? Click again during focus to go back to start. The demo runs fast: one second is one minute. And no, you can't skip the break.</p>
         <div class="sim-controls">
           <button id="bL" aria-label="Turn knob left">⟲ turn</button>
           <button id="bR" aria-label="Turn knob right">turn ⟳</button>
@@ -455,7 +455,7 @@ addEventListener('scroll', pickBg, { passive: true }); pickBg();
   }
   function press() {
     if (mode === 'set') { mode = 'focus'; remaining = mins(focus); brk = mins(breakFor(focus)); acc = 0; status.textContent = 'focus time!'; sub.textContent = 'Only the green part stays lit and counts down. The break comes after, no matter what.'; }
-    else if (mode === 'focus') { remaining = mins(focus); acc = 0; hold = performance.now() + 2500; status.textContent = 'focus restarted!'; sub.textContent = 'Pressing the knob during focus restarts the session from the top. The break still comes after, no matter what.'; }
+    else if (mode === 'focus') { mode = 'idle'; focus = 0; knob.setAttribute('aria-valuenow', 0); status.textContent = 'back to start'; sub.textContent = 'Picked the wrong time? Pressing the knob during focus takes you back to the start, so you can set a new time. The first light blinks until you do.'; }
     else if (mode === 'flash' || mode === 'break') { status.textContent = "breaks can't be skipped"; sub.textContent = 'Taking the break is the whole point. Stretch, drink some water, look away from the screen.'; }
   }
   let last = performance.now();
