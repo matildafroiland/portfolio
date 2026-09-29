@@ -309,7 +309,7 @@ section{padding:120px 0 0}
     <div class="fixes">
       <div class="fix rv"><p class="was"><s>Users couldn't tell if it was on</s></p><span class="dot"><i style="background:#6FEB8C;box-shadow:0 0 10px #6FEB8C"></i></span><p class="now">one green light always stays on</p></div>
       <div class="fix rv"><p class="was"><s>Unclear when no time was set</s></p><span class="dot"><i style="background:#6FEB8C;animation:blink 1s steps(1) infinite"></i></span><p class="now">the first light blinks until you pick a time</p></div>
-      <div class="fix rv"><p class="was"><s>Nobody noticed the break starting</s></p><span class="dot"><i style="background:#FF5A6E;box-shadow:0 0 10px #FF5A6E"></i></span><p class="now">the whole ring flashes red for 5 seconds</p></div>
+      <div class="fix rv"><p class="was"><s>Nobody noticed the break starting</s></p><span class="dot"><i style="background:#FF5A6E;box-shadow:0 0 10px #FF5A6E"></i></span><p class="now">the whole ring turns red for 5 seconds</p></div>
     </div>
   </section>
 </div>
@@ -356,8 +356,8 @@ section{padding:120px 0 0}
       <div>
         <span class="label">try it yourself</span>
         <h2>Set a focus session</h2>
-        <p class="status" id="status">no time set, turn me!</p>
-        <p class="sub" id="sub">Drag the knob around (or use the arrow keys), then click it to start. Chose the wrong time? Click again during focus to go back to start. The demo runs fast: one second is one minute. And no, you can't skip the break.</p>
+        <p class="status" id="status">no time set: turn me, or click for 45 min</p>
+        <p class="sub" id="sub">Drag the knob around (or use the arrow keys), then click it to start, or just click it for a standard 45-minute session. Chose the wrong time? Click again during focus to go back to start. The demo runs fast: one second is one minute. And no, you can't skip the break.</p>
         <div class="sim-controls">
           <button id="bL" aria-label="Turn knob left">⟲ turn</button>
           <button id="bR" aria-label="Turn knob right">turn ⟳</button>
@@ -443,18 +443,19 @@ addEventListener('scroll', pickBg, { passive: true }); pickBg();
     document.getElementById('spinnerPath').setAttribute('d', d + 'Z'); })();
 
   const status = document.getElementById('status'), sub = document.getElementById('sub'), knob = document.getElementById('knob');
-  const IDLE_SUB = 'Drag the knob around (or use the arrow keys), then click it to start. The demo runs fast: one second is one minute.';
+  const IDLE_SUB = 'Drag the knob around (or use the arrow keys) to pick a time, then click it to start. Or just click it for a standard 45-minute session. The demo runs fast: one second is one minute.';
   let hold = 0, mode = 'idle', focus = 0, remaining = 0, brk = 0, flashT = 0, knobAngle = 0, acc = 0;
   const breakFor = f => f ? Math.max(1, Math.round(f / 3)) : 0, mins = n => Math.round(n * PER);
   function turn(dir) {
     if (mode !== 'idle' && mode !== 'set') return;
     focus = Math.max(0, Math.min(MAXF, focus + dir)); mode = focus ? 'set' : 'idle';
     knobAngle += dir * 18; knob.style.transform = `rotate(${knobAngle}deg)`; knob.setAttribute('aria-valuenow', mins(focus));
-    status.textContent = focus ? `${mins(focus)} min focus, then ${mins(breakFor(focus))} min break` : 'no time set, turn me!';
+    status.textContent = focus ? `${mins(focus)} min focus, then ${mins(breakFor(focus))} min break` : 'no time set: turn me, or click for 45 min';
     sub.textContent = focus ? 'Green is your focus time, red is the break that follows. Click the knob to start.' : IDLE_SUB;
   }
   function press() {
-    if (mode === 'set') { mode = 'focus'; remaining = mins(focus); brk = mins(breakFor(focus)); acc = 0; status.textContent = 'focus time!'; sub.textContent = 'Only the green part stays lit and counts down. The break comes after, no matter what.'; }
+    if (mode === 'idle') { mode = 'focus'; focus = 20; remaining = 45; brk = 15; acc = 0; knob.setAttribute('aria-valuenow', 45); status.textContent = 'standard session: 45 min'; sub.textContent = 'One click with no time set starts a 45-minute focus session with a 15-minute break, the rhythm the expert from ADHD Norge recommended.'; }
+    else if (mode === 'set') { mode = 'focus'; remaining = mins(focus); brk = mins(breakFor(focus)); acc = 0; status.textContent = 'focus time!'; sub.textContent = 'Only the green part stays lit and counts down. The break comes after, no matter what.'; }
     else if (mode === 'focus') { mode = 'idle'; focus = 0; knob.setAttribute('aria-valuenow', 0); status.textContent = 'back to start'; sub.textContent = 'Picked the wrong time? Pressing the knob during focus takes you back to the start, so you can set a new time. The first light blinks until you do.'; }
     else if (mode === 'flash' || mode === 'break') { status.textContent = "breaks can't be skipped"; sub.textContent = 'Taking the break is the whole point. Stretch, drink some water, look away from the screen.'; }
   }
@@ -464,7 +465,7 @@ addEventListener('scroll', pickBg, { passive: true }); pickBg();
     if (mode === 'focus' || mode === 'break') {
       acc += dt; while (acc >= 1) { acc -= 1; remaining = Math.max(0, remaining - 1); }
       if (remaining === 0) {
-        if (mode === 'focus') { mode = 'flash'; flashT = 0; status.textContent = 'break time!'; sub.textContent = 'The whole ring flashes red for 5 seconds, so you notice the break even in hyperfocus.'; }
+        if (mode === 'focus') { mode = 'flash'; flashT = 0; status.textContent = 'break time!'; sub.textContent = 'The whole ring turns red for 5 seconds, so you notice the break even in hyperfocus.'; }
         else { mode = 'idle'; focus = 0; status.textContent = 'break over. ready again'; sub.textContent = 'The first light blinks to show the Timebox is on but no time is set.'; }
       } else if (now > hold) status.textContent = `${mode === 'focus' ? 'focus' : 'break'}: ${remaining} min left`;
     }
@@ -475,7 +476,7 @@ addEventListener('scroll', pickBg, { passive: true }); pickBg();
       if (mode === 'idle') col = i === 0 && blink ? G : OFF;
       else if (mode === 'set') col = i < focus ? G : i < focus + breakFor(focus) ? RED : OFF;
       else if (mode === 'focus') col = i < Math.ceil(remaining / PER) ? G : OFF;
-      else if (mode === 'flash') col = blink ? RED : OFF;
+      else if (mode === 'flash') col = RED;
       else if (mode === 'break') col = i < Math.ceil(remaining / PER) ? RED : OFF;
       leds[i].setAttribute('fill', col);
     }
