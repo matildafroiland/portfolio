@@ -41,8 +41,6 @@ nav .links a:hover::after{content:"";position:absolute;left:0;right:0;bottom:-4p
 .photo img{width:100%;aspect-ratio:4/4.6;object-fit:cover}
 .photo .caption{position:absolute;bottom:10px;left:0;right:0;text-align:center;font-size:25px;line-height:1.05}
 .photo .tape{position:absolute;top:-14px;left:50%;width:110px;height:30px;background:rgba(227,161,179,.7);transform:translateX(-50%) rotate(-4deg);z-index:1}
-.photo .note{position:absolute;right:-34px;top:-78px;color:var(--pink-ink);font-size:30px;transform:rotate(8deg);line-height:1;text-align:right}
-.photo .note svg{display:block;margin:2px 0 0 -12px;transform:scaleX(-1) rotate(-20deg)}
 
 .cue{position:absolute;left:50%;bottom:22px;transform:translateX(-50%);text-align:center;text-decoration:none}
 .cue span{font-size:32px;display:block}
@@ -88,8 +86,7 @@ footer .row{display:flex;justify-content:space-between;color:var(--ink-soft);fon
 @media (max-width:760px){
   .wrap{padding:0 20px}
   .hero{grid-template-columns:1fr;gap:40px;padding-top:10px}
-  .photo .note{left:auto;right:-6px;bottom:-40px}
-  .grid{grid-template-columns:1fr}
+    .grid{grid-template-columns:1fr}
   .grid .proj:nth-child(even){margin-top:0}
   .proj .type{right:6px}
   nav .links a{margin-left:16px}
@@ -113,9 +110,6 @@ footer .row{display:flex;justify-content:space-between;color:var(--ink-soft);fon
     <div class="photo">
       <div class="tape"></div>
       <div class="frame"><img src="img/me.jpg" alt="Portrait of Matilda"></div>
-      <div class="note hand">that's me!
-        <svg width="70" height="34" viewBox="0 0 70 34"><path d="M4 6 C 24 30, 44 30, 64 18" stroke="#B85E7A" stroke-width="2.5" fill="none" stroke-linecap="round"/><path d="M54 12 L65 18 L56 27" stroke="#B85E7A" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </div>
     </div>
     <a class="cue" href="#work">
       <span class="hand">see what I've made</span>
