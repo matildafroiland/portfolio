@@ -56,15 +56,17 @@ nav .links a{margin-left:28px;font-size:14px;text-decoration:none}
 
 /* hero */
 .kicker{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);margin:0 0 10px}
-.title-row{display:flex;align-items:flex-end;gap:24px;flex-wrap:wrap}
-.title-row .hand{font-size:calc(28px * var(--hand-scale));color:var(--pink-ink);transform:rotate(-4deg);margin-bottom:18px}
+.title-row{display:block}
+.title-row .hand{display:inline-block;font-size:24px;line-height:1.2;color:var(--pink-ink);transform:rotate(-1.5deg);margin:14px 0 0 4px}
 .lede{font-size:22px;line-height:1.45;max-width:640px;margin:22px 0 40px}
 .hero-img{border-radius:18px;overflow:hidden;position:relative}
 .hero-img img{width:100%;aspect-ratio:16/9;object-fit:cover;object-position:50% 88%}
 .hero-img .tape{position:absolute;top:-12px;left:8%;width:120px;height:30px;background:rgba(227,161,179,.75);transform:rotate(-5deg);z-index:1}
-.facts{display:flex;flex-wrap:wrap;gap:10px;margin:28px 0 0}
-.facts span{font-size:14px;border:1px solid var(--line);border-radius:999px;padding:7px 14px}
-.facts b{font-weight:500}
+.facts{display:grid;grid-template-columns:repeat(4,1fr);gap:26px;margin:34px 0 0;padding-top:22px;border-top:1.5px dashed var(--line)}
+.facts span{font-size:14.5px;line-height:1.5;color:var(--ink-soft);position:relative;padding-left:18px}
+.facts span::before{content:"✦";position:absolute;left:0;top:1px;font-size:11px;color:var(--pink)}
+.facts b{display:block;font-family:var(--f-hand);font-weight:400;font-size:24px;line-height:1;color:var(--pink-ink);margin-bottom:6px}
+@media (max-width:860px){.facts{grid-template-columns:1fr 1fr}}
 
 section{padding:120px 0 0}
 
@@ -226,10 +228,10 @@ nav .links a.lang:hover::after{display:none}
     <div class="hero-img rv"><div class="tape"></div><img src="cs/tb_desk_sun.jpg" alt="TimeBox på en solbelyst pult med en lampe og et glass matcha"></div>
     <p class="caption">Visualisering av den ferdige prototypen, laget fra 3D-printfilene våre.</p>
     <div class="facts">
-      <span><b>Hovedroller:</b> workshops, Arduino- og LED-kode, visuelt design, 3D-printing</span>
-      <span><b>Team:</b> 5 studenter i interaksjonsdesign</span>
-      <span><b>Når:</b> 16 uker, våren 2025</span>
-      <span><b>Metoder:</b> intervjuer, workshops, co-design, prototyping, brukertesting</span>
+      <span><b>hovedroller</b>workshops, Arduino- og LED-kode, visuelt design, 3D-printing</span>
+      <span><b>team</b>5 studenter i interaksjonsdesign</span>
+      <span><b>når</b>16 uker, våren 2025</span>
+      <span><b>metoder</b>intervjuer, workshops, co-design, prototyping, brukertesting</span>
     </div>
   </header>
 
