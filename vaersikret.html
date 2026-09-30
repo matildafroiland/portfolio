@@ -261,13 +261,13 @@ nav .links a{margin-left:28px;font-size:14px;text-decoration:none}
 <div class="wrap">
   <nav>
     <a class="logo" href="index.html">Matilda F.</a>
-    <div class="links"><a href="index.html#work">Work</a><a href="#">About</a><a href="index.html#contact">Contact</a></div>
+    <div class="links"><a href="index.html#work">Projects</a><a href="index.html#contact">Contact</a></div>
   </nav>
 
   <header data-bg="#EAE2D3">
-    <a class="back" href="index.html#work">← All work</a>
+    <a class="back" href="index.html#work">← All projects</a>
     <p class="kicker">01 · IN2000 · Spring 2026</p>
-    <div class="title-row"><h1>VærSikret</h1><span class="hand">weather data, made useful ↓</span></div>
+    <div class="title-row"><h1>VærSikret</h1><span class="hand">Turning weather data into clear, actionable advice.</span></div>
     <p class="lede">An Android app that shows homeowners how much <span class="u">wind and heavy rain</span> their home has faced, and what they can do to protect it.</p>
     <div class="hero-img rv">
       <div class="tape"></div>
@@ -281,8 +281,8 @@ nav .links a{margin-left:28px;font-size:14px;text-decoration:none}
     <div class="facts">
       <span><b>My role:</b> the only designer on the team</span>
       <span><b>Team:</b> 5 developers + me</span>
-      <span><b>When:</b> about 12 weeks, spring 2026</span>
-      <span><b>Methods:</b> survey, guerrilla testing, usability testing, co-design</span>
+      <span><b>When:</b> 11 weeks, spring 2026</span>
+      <span><b>Methods:</b> survey, guerrilla testing, usability testing</span>
     </div>
   </header>
 
@@ -317,7 +317,7 @@ nav .links a{margin-left:28px;font-size:14px;text-decoration:none}
     <div class="learn">
       <div class="rv"><span class="hand">what it taught me</span><p>Pick the fastest method that still gives real answers. A survey was the only research that fit into one week.</p></div>
       <div class="rv"><span class="hand">and</span><p>Losing work is frustrating. Talking about it openly as a team got us moving again faster than pushing through.</p></div>
-      <div class="rv"><span class="hand">also</span><p>Working in short sprints made the change manageable. We re-planned in one sprint, so the rest of the project didn't suffer as much as it could have.</p></div>
+      <div class="rv"><span class="hand">also</span><p>Working in short sprints made the change manageable. We re-planned in one sprint, so we could stay on track and deliver a solid MVP.</p></div>
     </div>
   </section>
 
@@ -327,7 +327,7 @@ nav .links a{margin-left:28px;font-size:14px;text-decoration:none}
     <div class="versus">
       <div>
         <p class="thought rv">We thought homeowners would care most about <s>floods and landslides.</s></p>
-        <p class="muted">I planned, ran and analysed the survey (with help from the team). The answers pointed somewhere else: people wanted to know about <span class="hl">wind and heavy rain</span>, so that became the focus of the whole app.</p>
+        <p class="muted">I planned, ran and analysed the survey. The answers pointed somewhere else: people wanted to know about <span class="hl">wind and heavy rain</span>, so that became the focus of the whole app.</p>
       </div>
       <div>
         <ul class="bars rv" aria-label="Share of survey respondents who rated each topic as important">
@@ -404,7 +404,7 @@ nav .links a{margin-left:28px;font-size:14px;text-decoration:none}
   <section data-bg="#F3DDE1">
     <span class="label">testing</span>
     <h2>One user, three tasks, a lot learned</h2>
-    <p class="narrow muted">After guerrilla tests around campus, I ran a moderated usability test with think-aloud. The user had to find information about her own address, and I timed each task.</p>
+    <p class="narrow muted">After guerrilla tests around campus, we made adjustments to the app. Then I ran a moderated usability test with think-aloud. The user had to find information about her own address, and I timed each task.</p>
     <div class="times">
       <div class="time bad rv"><b>1:20</b><p class="task">Task 1: find the wind strength at your address</p><p>She searched her address, then kept looking at the map. She didn't notice the card at the bottom had to be pulled up.</p></div>
       <div class="time rv"><b>0:05</b><p class="task">Task 2: find heavy rain for your address</p><p>Once she knew where the card was, this was instant.</p></div>
@@ -496,7 +496,7 @@ nav .links a{margin-left:28px;font-size:14px;text-decoration:none}
   </section>
 
   <a class="next" href="timebox.html" data-bg="#EAE2D3">
-    <p class="kicker">Next project</p><span class="big">Timebox →</span>
+    <p class="kicker">Next project</p><span class="big">TimeBox →</span>
   </a>
 </div>
 
@@ -537,10 +537,10 @@ addEventListener('scroll', pickBg, { passive: true }); pickBg();
   };
   // tour: [screen shown, tap this hotspot index, big caption, small caption]
   const tour = [
-    ['s00_welcome', 0, 'A welcome screen first', 'It explains what the app is for. Added after testing, and I coded it.'],
+    ['s00_welcome', 0, 'A welcome screen first', 'It explains what the app is for.'],
     ['s01', 0, 'Search for your address', 'Or tap anywhere on the map.'],
     ['s02_search', 0, 'Pick it from the list', 'Suggestions get more precise with every letter.'],
-    ['s03_selected', 0, 'The card slides up on its own', 'A fix from usability testing: before, users had to find and drag it up.'],
+    ['s03_selected', 0, 'The card slides up on its own', ''],
     ['s04_wind', 1, 'Wind, in plain language', 'Strongest gusts and what counts as normal wind for your area.'],
     ['s06_wind_graph', 0, 'Tap for the details', 'How many days each wind level has occurred, on the Beaufort scale.'],
     ['s03_selected', 1, 'Now the rain', ''],
@@ -549,8 +549,8 @@ addEventListener('scroll', pickBg, { passive: true }); pickBg();
     ['s03_selected', 2, 'What can I do about it?', ''],
     ['s11_measures', 1, 'Measures you can filter', 'By benefit, cost, who does it and time frame. A user helped design this.'],
     ['s12_measure_detail', 0, 'Everything you need to decide', 'Why it helps, what it costs and how to do it.'],
-    ['s03_selected', 3, 'Questions? Check the FAQ', 'I designed and coded this page.'],
-    ['s15_faq', 1, '"Is the data exact for my home?"', 'Added after testing: the data comes from the nearest weather station.'],
+    ['s03_selected', 3, 'Questions? Check the FAQ', ''],
+    ['s15_faq', 1, '"Is the data exact for my home?"', 'The data comes from the nearest weather station.'],
     ['s16_faq_open', -1, "That's the tour!", 'Now tap around the phone yourself.'],
   ];
   const shot = document.getElementById('shot'), scr = document.getElementById('screen'), finger = document.getElementById('finger');

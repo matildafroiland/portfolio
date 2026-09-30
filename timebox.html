@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Timebox · Matilda Aanestad Frøiland</title>
+<title>TimeBox · Matilda Aanestad Frøiland</title>
 <link rel="stylesheet" href="fonts/fonts.css">
 <script type="importmap">
 {"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"}}
@@ -211,21 +211,21 @@ section{padding:120px 0 0}
 <div class="wrap">
   <nav>
     <a class="logo" href="index.html">Matilda F.</a>
-    <div class="links"><a href="index.html#work">Work</a><a href="#">About</a><a href="index.html#contact">Contact</a></div>
+    <div class="links"><a href="index.html#work">Projects</a><a href="index.html#contact">Contact</a></div>
   </nav>
 
   <header data-bg="#EAE2D3">
-    <a class="back" href="index.html#work">← All work</a>
+    <a class="back" href="index.html#work">← All projects</a>
     <p class="kicker">02 · IN1060 · Spring 2025</p>
-    <div class="title-row"><h1>Timebox</h1><span class="hand">a timer you can feel ↓</span></div>
+    <div class="title-row"><h1>TimeBox</h1><span class="hand">A Pomodoro timer, built into a box.</span></div>
     <p class="lede">A screen-free focus timer for adults with ADHD. Turn the knob to set a focus session, and a <span class="u">ring of light</span> shows how much time is left.</p>
-    <div class="hero-img rv"><div class="tape"></div><img src="cs/tb_desk_sun.jpg" alt="Timebox on a sunlit desk with a lamp and a glass of matcha"></div>
+    <div class="hero-img rv"><div class="tape"></div><img src="cs/tb_desk_sun.jpg" alt="TimeBox on a sunlit desk with a lamp and a glass of matcha"></div>
     <p class="caption">Visualisation of the final prototype, built from our 3D-print files.</p>
     <div class="facts">
       <span><b>Main roles:</b> workshops, Arduino and LED code, visual design, 3D printing</span>
       <span><b>Team:</b> 5 interaction design students</span>
-      <span><b>When:</b> Feb – Jun 2025</span>
-      <span><b>Methods:</b> interviews, co-design, prototyping, usability testing</span>
+      <span><b>When:</b> 16 weeks, spring 2025</span>
+      <span><b>Methods:</b> interviews, workshops, co-design, prototyping, usability testing</span>
     </div>
   </header>
 
@@ -330,7 +330,7 @@ section{padding:120px 0 0}
   <section data-bg="#22344F" data-theme="dark" id="try" style="padding-top:40px">
     <div class="sim">
       <div class="sim-stage">
-        <svg id="simsvg" viewBox="-200 -200 400 400" aria-label="Interactive Timebox seen from above">
+        <svg id="simsvg" viewBox="-200 -200 400 400" aria-label="Interactive TimeBox seen from above">
           <defs>
             <filter id="glow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
             <pattern id="speck" width="40" height="40" patternUnits="userSpaceOnUse"><rect width="40" height="40" fill="#E9E5DC"/><circle cx="5" cy="7" r="1" fill="#8d897f"/><circle cx="22" cy="15" r=".8" fill="#5f5c57"/><circle cx="33" cy="31" r="1.1" fill="#9a968d"/><circle cx="12" cy="30" r=".7" fill="#5f5c57"/><circle cx="30" cy="4" r=".6" fill="#8d897f"/></pattern>
@@ -374,7 +374,7 @@ section{padding:120px 0 0}
     <div class="video rv"><video controls preload="metadata" poster="cs/tb_video_poster.jpg" src="cs/tb_video.mp4"></video></div>
     <div class="duo">
       <video autoplay muted loop playsinline src="cs/tb_loop.mp4" aria-label="The LED ring counting down"></video>
-      <img src="cs/tb_desk_green.jpg" alt="Timebox on a desk pad next to a keyboard and mouse">
+      <img src="cs/tb_desk_green.jpg" alt="TimeBox on a desk pad next to a keyboard and mouse">
     </div>
   </section>
 
@@ -389,7 +389,7 @@ section{padding:120px 0 0}
     </ul>
     <div class="learned">
       <div class="card rv"><span class="label">what I learned</span><p>How design works <span class="hl">in practice</span>, not just in theory. Our users often wanted something different from what we as designers thought was best, and they were usually right. Testing also showed that things we found obvious, like pressing the knob to start, weren't intuitive at all.</p></div>
-      <div class="card rv"><span class="label">about teamwork</span><p>Five people with different ideas need clear roles and a shared plan. We had neither for the first half of the project. Next time I'd push for a clear requirement spec and a named lead from day one, so we can spend the energy on the users instead.</p></div>
+      <div class="card rv"><span class="label">about teamwork</span><p>Five people with different ideas need clear roles and a shared plan. We had neither for the first half of the project. Next time I'd push for a clear requirement spec and a named lead from day one, so we can work more efficiently and deliver better results.</p></div>
     </div>
     <div class="next-iter rv">
       <div>
@@ -397,7 +397,7 @@ section{padding:120px 0 0}
         <h3 style="font-size:calc(40px * var(--head-scale))">Shrink it to a hockey puck</h3>
         <p class="muted">The concept was always a puck small enough to carry between desk and meeting room. The prototype grew to 15 cm because the Arduino and wiring had to fit inside. With a custom circuit board, the same interaction could fit in a puck.</p>
       </div>
-      <figure class="puck-fig"><img src="cs/tb_puck.jpg" alt="Concept visualisation: a Timebox the size of a hockey puck on a desk"><figcaption><span class="hand">concept</span> Visualisation of a puck-sized next iteration.</figcaption></figure>
+      <figure class="puck-fig"><img src="cs/tb_puck.jpg" alt="Concept visualisation: a TimeBox the size of a hockey puck on a desk"><figcaption><span class="hand">concept</span> Visualisation of a puck-sized next iteration.</figcaption></figure>
     </div>
   </section>
 
@@ -466,7 +466,7 @@ addEventListener('scroll', pickBg, { passive: true }); pickBg();
       acc += dt; while (acc >= 1) { acc -= 1; remaining = Math.max(0, remaining - 1); }
       if (remaining === 0) {
         if (mode === 'focus') { mode = 'flash'; flashT = 0; status.textContent = 'break time!'; sub.textContent = 'The whole ring turns red for 5 seconds, so you notice the break even in hyperfocus.'; }
-        else { mode = 'idle'; focus = 0; status.textContent = 'break over. ready again'; sub.textContent = 'The first light blinks to show the Timebox is on but no time is set.'; }
+        else { mode = 'idle'; focus = 0; status.textContent = 'break over. ready again'; sub.textContent = 'The first light blinks to show the TimeBox is on but no time is set.'; }
       } else if (now > hold) status.textContent = `${mode === 'focus' ? 'focus' : 'break'}: ${remaining} min left`;
     }
     if (mode === 'flash') { flashT += dt; if (flashT >= 5) { mode = 'break'; remaining = brk; acc = 0; } }
@@ -567,7 +567,7 @@ const parts = [];
 function part(mesh, a, b, label, mid = 3) { mesh.traverse(o => { if (o.isMesh) o.castShadow = o.receiveShadow = true; }); mesh.position.y = a; dev.add(mesh); parts.push({ mesh, a, b, label, mid }); }
 part(new THREE.Mesh(new THREE.CylinderGeometry(75, 75, 2, 128), speck(3)), 1, 1, 'Bottom plate');
 part(new THREE.Mesh(spinnerGeo(), speck(.012)), 2.6, 34, 'Fidget spinner');
-part(new THREE.Mesh(new THREE.CylinderGeometry(38, 38, 6, 96), speck(2)), 5, 73, 'Axle for the spinner');
+part(new THREE.Mesh(new THREE.CylinderGeometry(38, 38, 6, 96), speck(2)), 5, 73, 'Center pin for the spinner');
 part(new THREE.Mesh(new THREE.CylinderGeometry(74.2, 74.2, 1, 128), speck(3)), 8.5, 100.5, 'Layer above the spinner');
 const body = stl(cyl, PLA({ normalMap: flute, normalScale: new THREE.Vector2(.35, .35) }));
 { const pos = body.geometry.attributes.position, uv = new Float32Array(pos.count * 2); for (let i = 0; i < pos.count; i++) { uv[i * 2] = Math.atan2(pos.getZ(i), pos.getX(i)) / (Math.PI * 2) + .5; uv[i * 2 + 1] = pos.getY(i) / 84; } body.geometry.setAttribute('uv', new THREE.BufferAttribute(uv, 2)); }
