@@ -50,10 +50,13 @@ nav .links a{margin-left:28px;font-size:14px;text-decoration:none}
 
 /* hero */
 .kicker{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);margin:0 0 10px}
-.title-row{display:flex;align-items:center;gap:56px}
-.title-row .hand{position:relative;flex:0 1 460px;font-size:36px;line-height:1.15;color:var(--pink-ink);transform:rotate(-5deg) translateY(-16px);margin:0;padding-left:8px}
-.title-row .hand::before{content:"";position:absolute;left:-58px;bottom:-4px;width:52px;height:30px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 34'%3E%3Cpath d='M56 6 C 40 2, 22 10, 8 24' stroke='%23B85E7A' stroke-width='2.5' fill='none' stroke-linecap='round'/%3E%3Cpath d='M6 14 L7 25 L18 24' stroke='%23B85E7A' stroke-width='2.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat center/contain}
-@media (max-width:860px){.title-row{display:block}.title-row .hand{display:block;margin-top:10px;font-size:28px;transform:rotate(-2deg)}.title-row .hand::before{display:none}}
+.title-row{display:flex;align-items:center;gap:48px}
+.title-row .doodle{flex:0 0 auto;width:230px;transform:rotate(-4deg) translateY(-10px)}
+.title-row .doodle svg{display:block;width:100%;height:auto}
+.title-row .doodle .d{stroke-dasharray:600;stroke-dashoffset:600;animation:draw 1.8s ease forwards .3s}
+@keyframes draw{to{stroke-dashoffset:0}}
+@media (prefers-reduced-motion:reduce){.title-row .doodle .d{animation:none;stroke-dashoffset:0}}
+@media (max-width:860px){.title-row .doodle{width:150px}}
 .lede{font-size:22px;line-height:1.45;max-width:660px;margin:22px 0 40px}
 .hero-img{border-radius:18px;overflow:hidden;position:relative;background:var(--navy)}
 .hero-img img{width:100%;aspect-ratio:16/9;object-fit:cover}
@@ -275,7 +278,13 @@ nav .links a.lang:hover::after{display:none}
   <header data-bg="#EAE2D3">
     <a class="back" href="index-en.html#work">← All projects</a>
     <p class="kicker">01 · IN2000 · Spring 2026</p>
-    <div class="title-row"><h1>VærSikret</h1><span class="hand">Turning weather data into clear, actionable advice.</span></div>
+    <div class="title-row"><h1>VærSikret</h1><span class="doodle" aria-hidden="true"><svg viewBox="0 0 240 130"><g fill="none" stroke="#B85E7A" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+<path class="d" d="M58 62 C 44 62, 38 46, 52 40 C 52 24, 76 18, 86 32 C 94 16, 124 18, 124 40 C 140 40, 144 62, 126 62 Z"/>
+<path class="d" d="M150 34 C 176 30, 196 34, 206 28 C 216 22, 208 10, 198 16"/>
+<path class="d" d="M158 52 C 186 48, 212 54, 226 46"/>
+<path class="d" d="M146 70 C 170 66, 188 72, 204 66 C 214 62, 212 76, 202 74"/>
+<path class="d" d="M66 78 l-5 12 M86 80 l-5 12 M106 78 l-5 12 M76 98 l-5 12 M96 100 l-5 12"/>
+</g></svg></span></div>
     <p class="lede">An Android app that shows homeowners how much <span class="u">wind and heavy rain</span> their home has faced, and what they can do to protect it.</p>
     <div class="hero-img rv">
       <div class="tape"></div>

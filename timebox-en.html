@@ -56,10 +56,13 @@ nav .links a{margin-left:28px;font-size:14px;text-decoration:none}
 
 /* hero */
 .kicker{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);margin:0 0 10px}
-.title-row{display:flex;align-items:center;gap:56px}
-.title-row .hand{position:relative;flex:0 1 460px;font-size:36px;line-height:1.15;color:var(--pink-ink);transform:rotate(-5deg) translateY(-16px);margin:0;padding-left:8px}
-.title-row .hand::before{content:"";position:absolute;left:-58px;bottom:-4px;width:52px;height:30px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 34'%3E%3Cpath d='M56 6 C 40 2, 22 10, 8 24' stroke='%23B85E7A' stroke-width='2.5' fill='none' stroke-linecap='round'/%3E%3Cpath d='M6 14 L7 25 L18 24' stroke='%23B85E7A' stroke-width='2.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat center/contain}
-@media (max-width:860px){.title-row{display:block}.title-row .hand{display:block;margin-top:10px;font-size:28px;transform:rotate(-2deg)}.title-row .hand::before{display:none}}
+.title-row{display:flex;align-items:center;gap:48px}
+.title-row .doodle{flex:0 0 auto;width:230px;transform:rotate(-4deg) translateY(-10px)}
+.title-row .doodle svg{display:block;width:100%;height:auto}
+.title-row .doodle .d{stroke-dasharray:600;stroke-dashoffset:600;animation:draw 1.8s ease forwards .3s}
+@keyframes draw{to{stroke-dashoffset:0}}
+@media (prefers-reduced-motion:reduce){.title-row .doodle .d{animation:none;stroke-dashoffset:0}}
+@media (max-width:860px){.title-row .doodle{width:150px}}
 .lede{font-size:22px;line-height:1.45;max-width:640px;margin:22px 0 40px}
 .hero-img{border-radius:18px;overflow:hidden;position:relative}
 .hero-img img{width:100%;aspect-ratio:16/9;object-fit:cover;object-position:50% 88%}
@@ -225,7 +228,13 @@ nav .links a.lang:hover::after{display:none}
   <header data-bg="#EAE2D3">
     <a class="back" href="index-en.html#work">← All projects</a>
     <p class="kicker">02 · IN1060 · Spring 2025</p>
-    <div class="title-row"><h1>TimeBox</h1><span class="hand">A Pomodoro timer, built into a box.</span></div>
+    <div class="title-row"><h1>TimeBox</h1><span class="doodle" aria-hidden="true"><svg viewBox="0 0 240 130"><g fill="none" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+<path class="d" stroke="#B85E7A" d="M120 16 C 150 14, 170 36, 168 64 C 166 94, 142 112, 116 110 C 88 108, 70 86, 72 60 C 74 34, 96 18, 122 18"/>
+<path class="d" stroke="#3F9A5A" d="M120 30 C 142 30, 156 46, 155 64 C 154 82, 140 96, 122 97"/>
+<path class="d" stroke="#B85E7A" stroke-dasharray="1 9" d="M110 96 C 94 92, 84 78, 86 62"/>
+<path class="d" stroke="#B85E7A" d="M112 58 C 112 50, 128 50, 128 60 C 128 70, 112 70, 112 60"/>
+<path class="d" stroke="#B85E7A" d="M184 30 l12 -8 M190 62 l14 0 M184 94 l12 8 M56 30 l-12 -8 M50 62 l-14 0"/>
+</g></svg></span></div>
     <p class="lede">A screen-free focus timer for adults with ADHD. Turn the knob to set a focus session, and a <span class="u">ring of light</span> shows how much time is left.</p>
     <div class="hero-img rv"><div class="tape"></div><img src="cs/tb_desk_sun.jpg" alt="TimeBox on a sunlit desk with a lamp and a glass of matcha"></div>
     <p class="caption">Visualisation of the final prototype, built from our 3D-print files.</p>
