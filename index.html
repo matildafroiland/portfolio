@@ -41,8 +41,8 @@ nav .links a:hover::after{content:"";position:absolute;left:0;right:0;bottom:-4p
 .photo img{width:100%;aspect-ratio:4/4.6;object-fit:cover}
 .photo .caption{position:absolute;bottom:10px;left:0;right:0;text-align:center;font-size:25px;line-height:1.05}
 .photo .tape{position:absolute;top:-14px;left:50%;width:110px;height:30px;background:rgba(227,161,179,.7);transform:translateX(-50%) rotate(-4deg);z-index:1}
-.photo .note{position:absolute;left:-150px;bottom:100px;color:var(--pink-ink);font-size:30px;transform:rotate(-6deg);line-height:1}
-.photo .note svg{display:block;margin:4px 0 0 60px}
+.photo .note{position:absolute;right:-34px;top:-78px;color:var(--pink-ink);font-size:30px;transform:rotate(8deg);line-height:1;text-align:right}
+.photo .note svg{display:block;margin:2px 0 0 -12px;transform:scaleX(-1) rotate(-20deg)}
 
 .cue{position:absolute;left:50%;bottom:22px;transform:translateX(-50%);text-align:center;text-decoration:none}
 .cue span{font-size:32px;display:block}
@@ -53,11 +53,11 @@ nav .links a:hover::after{content:"";position:absolute;left:0;right:0;bottom:-4p
 /* projects */
 .work{padding:90px 0 40px}
 .work h2{font-size:clamp(44px,5vw,60px);margin:0 0 6px}
-.work .sub{color:var(--ink-soft);margin:0 0 120px;font-size:16px}
+.work .sub{color:var(--ink-soft);margin:0 0 50px;font-size:16px}
 .grid{display:grid;grid-template-columns:1fr 1fr;column-gap:64px;row-gap:80px}
 .grid .proj:nth-child(even){margin-top:150px}
 .proj{text-decoration:none;display:block;position:relative}
-.proj .num{position:absolute;top:-96px;left:-14px;font-family:var(--f-head);font-weight:300;font-size:120px;line-height:1;color:transparent;-webkit-text-stroke:1.5px rgba(30,42,63,.28);z-index:0}
+.proj .num{display:block;margin:0 0 18px -4px;font-family:var(--f-head);font-weight:300;font-size:96px;line-height:.8;color:transparent;-webkit-text-stroke:1.5px rgba(30,42,63,.28);z-index:0}
 .proj .pic{position:relative;z-index:1;background:#fff;padding:10px;box-shadow:0 20px 34px -22px rgba(30,42,63,.55);transform:rotate(var(--r,-1.5deg));transition:transform .45s cubic-bezier(.2,.8,.2,1)}
 .proj:nth-child(even) .pic{--r:1.8deg}
 .proj:hover .pic{transform:rotate(0) translateY(-8px)}
